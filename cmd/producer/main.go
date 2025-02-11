@@ -10,19 +10,20 @@ func main() {
 	deliveryChan := make(chan kafka.Event)
 	producer := NewKafkaProducer()
 	Publish("mensagem", "teste", producer, nil, deliveryChan)
+	go DeliveryReport(deliveryChan)
 
-	e := <-deliveryChan
-	m, ok := e.(*kafka.Message)
-	if !ok {
-		log.Println("Couldn't get message from delivery channel")
-	}
-	if m.TopicPartition.Error != nil {
-		log.Println(m.TopicPartition.Error)
-	} else {
-		log.Println("Delivered message:", m.TopicPartition)
-	}
+	// e := <-deliveryChan
+	// m, ok := e.(*kafka.Message)
+	// if !ok {
+	// 	log.Println("Couldn't get message from delivery channel")
+	// }
+	// if m.TopicPartition.Error != nil {
+	// 	log.Println(m.TopicPartition.Error)
+	// } else {
+	// 	log.Println("Delivered message:", m.TopicPartition)
+	// }
 
-	producer.Flush(1000)
+	// producer.Flush(1000)
 }
 
 // NewKafkaProducer returns a new Kafka producer.
@@ -67,4 +68,19 @@ func Publish(msg string, topic string, producer *kafka.Producer, key []byte, del
 	}
 
 	return nil
+}
+
+// DeliveryReport starts a goroutine that continually receives from the deliveryChan
+// channel and logs the success or failure of each message delivery.
+func DeliveryReport(deliveryChan chan kafka.Event) {
+	for e := range deliveryChan {
+		switch ev := e.(type) {
+		case *kafka.Message:
+			if ev.TopicPartition.Error != nil {
+				log.Println("Delivery failed:", ev.TopicPartition)
+			} else {
+				log.Println("Delivered message to topic:", ev.TopicPartition)
+			}
+		}
+	}
 }
