@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["mensageria"],
+  "cSpell.words": ["confluentinc", "mensageria"],
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "always",
     "source.fixAll.eslint": "always",
