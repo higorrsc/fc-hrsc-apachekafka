@@ -1,4 +1,11 @@
 services:
+  app:
+    build: .
+    container_name: go-kafka
+    volumes:
+      - .:/go/src
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -8,7 +15,7 @@ services:
       - "host.docker.internal:172.17.0.1"
 
   kafka:
-    image: confluentinc/cp-kafka:latest #6.0.0
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
@@ -26,7 +33,7 @@ services:
       - "host.docker.internal:172.17.0.1"
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:latest #6.0.0
+    image: confluentinc/cp-enterprise-control-center:latest
     hostname: control-center
     depends_on:
       - kafka

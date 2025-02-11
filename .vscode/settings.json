@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["confluentinc", "mensageria"],
+  "cSpell.words": ["confluentinc", "librdkafka", "mensageria"],
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "always",
     "source.fixAll.eslint": "always",
@@ -8,5 +8,7 @@
   },
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "editor.rulers": [80, 120]
+  "editor.rulers": [80, 120],
+  "go.inlayHints.functionTypeParameters": true,
+  "go.inlayHints.parameterNames": true
 }
