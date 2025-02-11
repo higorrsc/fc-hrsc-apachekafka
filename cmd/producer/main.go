@@ -7,8 +7,21 @@ import (
 )
 
 func main() {
+	deliveryChan := make(chan kafka.Event)
 	producer := NewKafkaProducer()
-	Publish("mensagem", "teste", producer, nil)
+	Publish("mensagem", "teste", producer, nil, deliveryChan)
+
+	e := <-deliveryChan
+	m, ok := e.(*kafka.Message)
+	if !ok {
+		log.Println("Couldn't get message from delivery channel")
+	}
+	if m.TopicPartition.Error != nil {
+		log.Println(m.TopicPartition.Error)
+	} else {
+		log.Println("Delivered message:", m.TopicPartition)
+	}
+
 	producer.Flush(1000)
 }
 
@@ -38,7 +51,7 @@ func NewKafkaProducer() *kafka.Producer {
 //
 // Returns an error if the message could not be produced.
 
-func Publish(msg string, topic string, producer *kafka.Producer, key []byte) error {
+func Publish(msg string, topic string, producer *kafka.Producer, key []byte, deliveryChan chan kafka.Event) error {
 	message := &kafka.Message{
 		Value: []byte(msg),
 		TopicPartition: kafka.TopicPartition{
@@ -48,7 +61,7 @@ func Publish(msg string, topic string, producer *kafka.Producer, key []byte) err
 		Key: key,
 	}
 
-	err := producer.Produce(message, nil)
+	err := producer.Produce(message, deliveryChan)
 	if err != nil {
 		return err
 	}
