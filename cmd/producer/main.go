@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -10,11 +9,11 @@ import (
 func main() {
 	deliveryChan := make(chan kafka.Event)
 	producer := NewKafkaProducer()
-	Publish("mensagem", "teste", producer, nil, deliveryChan)
-	go DeliveryReport(deliveryChan)
+	Publish("transferir", "teste", producer, []byte("new_transfer"), deliveryChan)
+	DeliveryReport(deliveryChan)
 
-	fmt.Println("sent message")
-	producer.Flush(2000)
+	// fmt.Println("sent message")
+	// producer.Flush(5000)
 
 	// e := <-deliveryChan
 	// m, ok := e.(*kafka.Message)
