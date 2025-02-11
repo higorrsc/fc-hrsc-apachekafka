@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -11,6 +12,9 @@ func main() {
 	producer := NewKafkaProducer()
 	Publish("mensagem", "teste", producer, nil, deliveryChan)
 	go DeliveryReport(deliveryChan)
+
+	fmt.Println("sent message")
+	producer.Flush(2000)
 
 	// e := <-deliveryChan
 	// m, ok := e.(*kafka.Message)
@@ -33,7 +37,10 @@ func main() {
 // error is logged with log.Println.
 func NewKafkaProducer() *kafka.Producer {
 	configMap := &kafka.ConfigMap{
-		"bootstrap.servers": "apache-kafka-kafka-1:9092",
+		"bootstrap.servers":   "apache-kafka-kafka-1:9092",
+		"delivery.timeout.ms": "0",
+		"acks":                "all",
+		"enable.idempotence":  "true",
 	}
 	p, err := kafka.NewProducer(configMap)
 	if err != nil {

@@ -1,5 +1,11 @@
 {
-  "cSpell.words": ["confluentinc", "github", "librdkafka", "mensageria"],
+  "cSpell.words": [
+    "acks",
+    "confluentinc",
+    "github",
+    "librdkafka",
+    "mensageria"
+  ],
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "always",
     "source.fixAll.eslint": "always",
