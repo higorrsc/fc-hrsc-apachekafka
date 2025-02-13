@@ -1,5 +1,25 @@
 {
-  "cSpell.words": ["confluentinc", "mensageria"],
+  "cSpell.words": [
+    "ADMINPASSWORD",
+    "ADMINUSERNAME",
+    "APPENDER",
+    "BASICAUTH",
+    "confluentinc",
+    "CONVERSIONPATTERN",
+    "dbdata",
+    "debezium",
+    "fullcycle",
+    "initdb",
+    "INITDB",
+    "innodb",
+    "LOGLEVEL",
+    "mensageria",
+    "mongodb",
+    "MONGODB",
+    "mysql",
+    "MYSQL",
+    "wesleywillians"
+  ],
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "always",
     "source.fixAll.eslint": "always",
